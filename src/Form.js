@@ -1,0 +1,113 @@
+import React, { Component } from "react";
+
+class Form extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+       
+        _id:"",
+      Name: "",
+      Age: "",
+      City: "",
+      isEdit:false,
+    };
+  }
+
+  infochange = (event) => {
+    const { name, value } = event.target;
+
+    this.setState({
+      [name]: value,
+    });
+  };
+
+  infosubmit = (event) => {
+   if(!this.state.isEdit)
+   {
+    let data = {
+        isEdit:this.state.isEdit,
+        Name:this.state.Name,
+        City:this.state.City,
+        Age:this.state.Age
+    }
+    this.props.myData(data)
+   }else{
+       
+    let data = {
+        
+        isEdit:this.state.isEdit,
+        _id:this.state._id,
+        Name:this.state.Name,
+        City:this.state.City,
+        Age:this.state.Age
+    }
+    this.props.myData(data)
+   }
+    
+  };
+ componentWillReceiveProps(props){
+
+    
+    console.log(props.setForm)
+     if(props.setForm._id != null){
+         this.setState({
+            isEdit:true,
+            _id:props.setForm._id,
+            Name:props.setForm.Name,
+            City:props.setForm.City,
+            Age:props.setForm.Age,
+           
+            
+         })
+     }
+ }
+
+  render() {
+    return (
+      <div>
+        <form onSubmit={this.infosubmit}>
+          <div className="form-group">
+            <label>Name:</label>
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Enter Name"
+              onChange={this.infochange}
+              name="Name"
+              value={this.state.Name}
+            />
+          </div>
+          <div className="form-group">
+            <label>City:</label>
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Enter City"
+              onChange={this.infochange}
+              name="City"
+              value={this.state.City}
+            />
+          </div>
+          <div className="form-group">
+            <label>Age:</label>
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Enter Age"
+              onChange={this.infochange}
+              name="Age"
+              value={this.state.Age}
+            />
+          </div>
+
+          <button type="submit" className="btn btn-primary">
+           {this.state.isEdit ? 'Update' :'create'}
+          </button>
+        </form>
+      </div>
+    );
+  }
+}
+
+export default Form;
